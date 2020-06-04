@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const request = require('supertest'); 
 const app = require('../lib/models/app.js'); 
-// const Shareable = require('../lib/models/Shareable'); 
+const Shareable = require('../lib/models/Shareable'); 
 
 describe('app routes', () => {
     const mongo = new MongoMemoryServer();
@@ -37,6 +37,25 @@ describe('app routes', () => {
                     views: 0,
                     __v: 0
                 });
+            });
+    });
+
+    it('gets a list of shareables', async () => {
+        await Shareable.create({
+            artist: 'Ben H',
+            description: 'a great artist'
+        });
+
+        return request(app)
+            .get('/shareables')
+            .then(res => {
+                expect(res.body).toEqual([{
+                    _id: expect.anything(),
+                    artist: 'Ben H', 
+                    description: 'a great artist',
+                    views: 0, 
+                    __v: 0
+                }]);
             });
     });
 
