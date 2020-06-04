@@ -59,4 +59,27 @@ describe('app routes', () => {
             });
     });
 
+    it('gets a shareable by id', async () => {
+        await Shareable.create({
+            artist: 'Ben H',
+            description: 'a great artist'
+        }); 
+
+        return request(app)
+            .post('/shareables/id')
+            .send({
+                artist: 'Ben H', 
+                description: 'a great artist', 
+            })
+            .then(res => {
+                expect(res.body).toEqual({
+                    _id: expect.anything(),
+                    artist: 'Ben H',
+                    description: 'a great artist',
+                    views: 0,
+                    __v: 0
+                });
+            });
+    });
+
 });
