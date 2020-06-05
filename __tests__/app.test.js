@@ -5,7 +5,7 @@ const app = require('../lib/models/app.js');
 const Shareable = require('../lib/models/Shareable'); 
 
 describe('app routes', () => {
-    const mongo = new MongoMemoryServer();
+    const mongodb = new MongoMemoryServer();
     beforeAll(() => {
         return mongo.getUri()
             .then(uri => mongoose.connect(uri, {
@@ -19,7 +19,8 @@ describe('app routes', () => {
     });
 
     afterAll(() => {
-        return mongoose.connection.close();
+        return mongoose.connection.close()
+        .then(() => mongodb.stop());
     });
 
     it('creates a new shareable', () => {
@@ -104,5 +105,16 @@ describe('app routes', () => {
                 });
             });
     });
+
+    it('can delete one shareable by id', async() => {
+        const deletedShareable = await Shareablle.create({
+            artist: 'Ben H', 
+            description: 'a great artist'
+
+        });
+
+    });
+
     
+
 });
