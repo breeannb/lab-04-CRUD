@@ -7,7 +7,7 @@ const Shareable = require('../lib/models/Shareable');
 describe('app routes', () => {
     const mongodb = new MongoMemoryServer();
     beforeAll(() => {
-        return mongo.getUri()
+        return mongodb.getUri()
             .then(uri => mongoose.connect(uri, {
                 useUnifiedTopology: true,
                 useNewUrlParser: true
@@ -20,7 +20,7 @@ describe('app routes', () => {
 
     afterAll(() => {
         return mongoose.connection.close()
-        .then(() => mongodb.stop());
+            .then(() => mongodb.stop());
     });
 
     it('creates a new shareable', () => {
