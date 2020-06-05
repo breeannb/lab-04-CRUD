@@ -107,14 +107,22 @@ describe('app routes', () => {
     });
 
     it('can delete one shareable by id', async() => {
-        const deletedShareable = await Shareablle.create({
-            artist: 'Ben H', 
+        const shareable = await Shareable.create({
+            artist: 'Ben H',
             description: 'a great artist'
+        }); 
 
-        });
-
+        return request(app)
+            .get(`/shareables/${shareable._id}`)
+            .then(res => {
+                expect(res.body).toEqual({
+                    _id: shareable.id,
+                    artist: expect.anything(), 
+                    description: expect.anything(),
+                    views: 0, 
+                    __v: 0
+                });
+            }); 
     });
-
-    
 
 });
