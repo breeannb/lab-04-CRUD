@@ -69,7 +69,7 @@ describe('app routes', () => {
             .get(`/shareables/${shareable._id}`)
             .then(res => {
                 expect(res.body).toEqual({
-                    _id: expect.anything(),
+                    _id: shareable.id,
                     artist: expect.anything(), 
                     description: expect.anything(),
                     views: 0, 
@@ -78,4 +78,31 @@ describe('app routes', () => {
             });
     });
 
+    it('can update one shareable by id', async() => {
+        const shareable = await Shareable.create({
+            artist: 'Ben H',
+            description: 'a great artist'
+        }); 
+
+        const newShareable = {
+            artist: 'Breeann B',
+            description: 'a great artist'
+        };
+
+        return request(app)
+            .patch(`/shareables/${shareable._id}`)
+            .send(
+                { artist: newShareable.artist }, 
+                { description: newShareable.description})
+            .then(res => {
+                expect(res.body).toEqual({
+                    _id: shareable.id,
+                    artist: 'Breeann B', 
+                    description: expect.anything(),
+                    views: 0, 
+                    __v: 0
+                });
+            });
+    });
+    
 });
