@@ -92,9 +92,7 @@ describe('app routes', () => {
 
         return request(app)
             .patch(`/shareables/${shareable._id}`)
-            .send(
-                { artist: newShareable.artist }, 
-                { description: newShareable.description})
+            .send(newShareable)
             .then(res => {
                 expect(res.body).toEqual({
                     _id: shareable.id,
